@@ -40,28 +40,30 @@ MiddlewareRegistry.register(store => next => action => {
  */
 function _shareRoom(
         roomURL: string, includeDialInfo: boolean, dispatch: Function) {
-    const message = getShareInfoText(roomURL, includeDialInfo);
-    const title = `${getName()} Conference`;
-    const onFulfilled
-        = (shared: boolean) => dispatch(endShareRoom(roomURL, shared));
+    getShareInfoText(roomURL, includeDialInfo)
+        .then(message => {
+            const title = `${getName()} Conference`;
+            const onFulfilled
+                = (shared: boolean) => dispatch(endShareRoom(roomURL, shared));
 
-    Share.share(
-        /* content */ {
-            message,
-            title
-        },
-        /* options */ {
-            dialogTitle: title, // Android
-            subject: title // iOS
-        })
-        .then(
-            /* onFulfilled */ value => {
-                onFulfilled(value.action === Share.sharedAction);
-            },
-            /* onRejected */ reason => {
-                logger.error(
-                    `Failed to share conference/room URL ${roomURL}:`,
-                    reason);
-                onFulfilled(false);
-            });
+            Share.share(
+                /* content */ {
+                    message,
+                    title
+                },
+                /* options */ {
+                    dialogTitle: title, // Android
+                    subject: title // iOS
+                })
+                .then(
+                    /* onFulfilled */ value => {
+                        onFulfilled(value.action === Share.sharedAction);
+                    },
+                    /* onRejected */ reason => {
+                        logger.error(
+                            `Failed to share conference/room URL ${roomURL}:`,
+                            reason);
+                        onFulfilled(false);
+                    });
+        });
 }

@@ -330,35 +330,37 @@ export const microsoftCalendarApi = {
             }
 
             const { dialInNumbersUrl } = getState()['features/base/config'];
-            const text = getShareInfoText(
-                location, dialInNumbersUrl !== undefined, true/* use html */);
 
-
-            const client = Client.init({
-                authProvider: done => done(null, token)
-            });
-
-            return client
-                .api(`/me/events/${id}`)
-                .get()
-                .then(description => {
-                    const body = description.body;
-
-                    if (description.bodyPreview) {
-                        body.content = `${description.bodyPreview}<br><br>`;
-                    }
-
-                    // replace all new lines from the text with html <br>
-                    // to make it pretty
-                    body.content += text.split('\n').join('<br>');
+            return dispatch(getShareInfoText(
+                location, dialInNumbersUrl !== undefined, true/* use html */))
+                .then(text => {
+                    const client = Client.init({
+                        authProvider: done => done(null, token)
+                    });
 
                     return client
-                        .api(`/me/calendar/events/${id}`)
-                        .patch({
-                            body,
-                            location: {
-                                'displayName': location
+                        .api(`/me/events/${id}`)
+                        .get()
+                        .then(description => {
+                            const body = description.body;
+
+                            if (description.bodyPreview) {
+                                body.content
+                                    = `${description.bodyPreview}<br><br>`;
                             }
+
+                            // replace all new lines from the text with html
+                            // <br> to make it pretty
+                            body.content += text.split('\n').join('<br>');
+
+                            return client
+                                .api(`/me/calendar/events/${id}`)
+                                .patch({
+                                    body,
+                                    location: {
+                                        'displayName': location
+                                    }
+                                });
                         });
                 });
         };
