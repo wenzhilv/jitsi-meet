@@ -40,7 +40,7 @@ MiddlewareRegistry.register(store => next => action => {
  */
 function _shareRoom(
         roomURL: string, includeDialInfo: boolean, dispatch: Function) {
-    getShareInfoText(roomURL, includeDialInfo)
+    dispatch(getShareInfoText(roomURL, includeDialInfo))
         .then(message => {
             const title = `${getName()} Conference`;
             const onFulfilled

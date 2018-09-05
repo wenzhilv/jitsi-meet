@@ -299,7 +299,7 @@ export function getShareInfoText(
 
                 if (!dialInConfCodeUrl || !dialInNumbersUrl || !mucURL) {
                     // URLs for fetching dial in numbers not defined
-                    return;
+                    return Promise.reject();
                 }
 
                 numbersPromise = Promise.all([
