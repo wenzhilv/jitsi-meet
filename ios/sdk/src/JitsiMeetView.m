@@ -23,6 +23,7 @@
 #import <React/RCTLinkingManager.h>
 #import <React/RCTRootView.h>
 
+#import "Dropbox.h"
 #import "Invite+Private.h"
 #import "InviteController+Private.h"
 #import "JitsiMeetView+Private.h"
@@ -126,6 +127,8 @@ static RCTBridgeWrapper *bridgeWrapper;
  */
 static NSDictionary *_launchOptions;
 
+static NSString *_dropboxAppKey;
+
 /**
  * The `JitsiMeetView`s associated with their `ExternalAPI` scopes (i.e. unique
  * identifiers within the process).
@@ -137,7 +140,22 @@ static NSMapTable<NSString *, JitsiMeetView *> *views;
     // Store launch options, will be used when we create the bridge.
     _launchOptions = [launchOptions copy];
 
+    if(_dropboxAppKey != nil) {
+        [Dropbox setAppKey:_dropboxAppKey];
+    }
     return YES;
+}
+
+/**
+ * Sets the dropbox app key.
+ *
+ * @param appKey The app key.
+ *
+ * NOTE: This method needs to be called from
+ * application:(UIApplication *)didFinishLaunchingWithOptions:(NSDictionary *)
+ */
++ (void)setDropboxAppKey:(NSString *) appKey {
+    _dropboxAppKey = appKey;
 }
 
 #pragma mark Linking delegate helpers
@@ -209,6 +227,13 @@ static NSMapTable<NSString *, JitsiMeetView *> *views;
                                   openURL:url
                         sourceApplication:sourceApplication
                                annotation:annotation];
+}
+
++ (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    return [Dropbox application:app
+                              openURL:url
+                              options: options];
 }
 
 #pragma mark Initializers

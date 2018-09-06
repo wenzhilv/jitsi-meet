@@ -23,6 +23,7 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.facebook.react:react-native:+'
+    compile 'com.dropbox.core:dropbox-core-sdk:3.0.8'
 
     compile project(':react-native-background-timer')
     compile project(':react-native-fast-image')

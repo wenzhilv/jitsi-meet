@@ -33,6 +33,7 @@
     "@atlaskit/spinner": "4.0.0",
     "@atlaskit/tabs": "4.0.1",
     "@atlaskit/theme": "2.4.0",
+    "@atlaskit/toggle": "5.0.8",
     "@atlaskit/tooltip": "9.1.1",
     "@microsoft/microsoft-graph-client": "1.1.0",
     "@webcomponents/url": "0.7.1",

@@ -18,10 +18,15 @@
 
 #import <JitsiMeet/JitsiMeet.h>
 
+NSString* APP_KEY = nil;
+
 @implementation AppDelegate
 
 -             (BOOL)application:(UIApplication *)application
   didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    if( APP_KEY != nil) {
+      [JitsiMeetView setDropboxAppKey:APP_KEY];
+    }
     return [JitsiMeetView application:application
         didFinishLaunchingWithOptions:launchOptions];
 }
@@ -44,6 +49,14 @@
                               openURL:url
                     sourceApplication:sourceApplication
                            annotation:annotation];
+}
+
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  return [JitsiMeetView application:app
+                            openURL:url
+                            options: options];
 }
 
 @end

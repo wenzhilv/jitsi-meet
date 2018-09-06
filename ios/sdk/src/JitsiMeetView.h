@@ -35,6 +35,11 @@
 +             (BOOL)application:(UIApplication *_Nonnull)application
   didFinishLaunchingWithOptions:(NSDictionary *_Nonnull)launchOptions;
 
++ (void)setDropboxAppKey:(NSString *) appKey;
+
++ (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
+
 +    (BOOL)application:(UIApplication * _Nonnull)application
   continueUserActivity:(NSUserActivity * _Nonnull)userActivity
     restorationHandler:(void (^ _Nullable)(NSArray * _Nullable))restorationHandler;
